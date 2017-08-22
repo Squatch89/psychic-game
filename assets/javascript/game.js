@@ -20,11 +20,22 @@ var letters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", 
     var lossesNode = document.createTextNode(losses);
     document.getElementById("losses").appendChild(lossesNode);
 
+
+    function resetGame () {
+        guessesLeft = 10;
+        lettersGuessed = [];
+        document.getElementById("letters").textContent = lettersGuessed;
+        document.getElementById("guessesLeft").textContent = guessesLeft;
+        selectedLetter = letters[Math.floor((Math.random() * (letters.length - 1)))];
+        console.log(selectedLetter + " this is the selected letter");
+    }
+
 //displays the letters guessed
     document.onkeyup = function (event) {
         var userInput = event.key;
+        var keyCode = event.charCode;
         
-        if ((lettersGuessed.indexOf(userInput) < 0)) {
+        if ( (keyCode >= 65 && keyCode <= 90) && (lettersGuessed.indexOf(userInput) < 0)) {
             
             
             // console.log(typeof userInput + " this was the user input");
@@ -38,23 +49,29 @@ var letters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", 
         
         console.log(lettersGuessed);
     
-//checks for win and loss conditions
-        if (lettersGuessed === selectedLetter) {
+//checks for win and loss conditions and updates the values displayed
+        if (String(lettersGuessed[lettersGuessed.length - 1]) === String(selectedLetter)) {
             wins++;
             console.log(wins + " this was a win");
+            document.getElementById("wins").textContent = wins;
+            resetGame();
+            
         }
         else
         {
             guessesLeft--;
             console.log(guessesLeft + " this was a guess");
-            document.getElementById("guessesLeft").appendChild(guessesLeftNode);
+            document.getElementById("guessesLeft").textContent = guessesLeft;
         }
     
         if (guessesLeft === 0)
         {
             losses++;
             console.log(losses + " this was a loss");
+            document.getElementById("losses").textContent = losses;
+            resetGame();
         }
         
         };
 
+ 
